@@ -1,9 +1,15 @@
 using API;
+using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.Load();
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddFastEndpoints();
+builder.Services.AddScoped(_ =>
+    new HttpClient
+    {
+        BaseAddress = new Uri("http://localhost:11434")
+    });
 builder.Services.AddOpenApi();
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
@@ -20,10 +26,6 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
 app.UseHttpsRedirection();
-
-
-app.MapGet("/ping", () => "pong");
-
+app.UseFastEndpoints();
 app.Run();

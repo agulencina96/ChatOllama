@@ -2,14 +2,14 @@ using UI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddScoped(sp =>
+builder.Services.AddScoped(_ =>
     new HttpClient
     {
-        BaseAddress = new Uri(builder.Configuration["FrontendUrl"] ?? "https://localhost:5010")
+        BaseAddress = new Uri("http://localhost:5010")
     });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

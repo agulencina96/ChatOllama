@@ -1,9 +1,7 @@
-﻿@using System.ComponentModel.DataAnnotations
-@using System.Text.Json
-@using System.Text.Json.Serialization 
-@inject HttpClient HttpClient
+﻿@inject HttpClient HttpClient
 @rendermode InteractiveServer
 @page "/"
+@using API.Features
 
 <PageTitle>Home</PageTitle>
 
@@ -48,9 +46,7 @@
         if (!string.IsNullOrWhiteSpace(UserMessage))
         {
             ChatMessages.Add(new ChatMessage { Text = UserMessage, IsUser = true });
-            
-            
-            // Simulate Ollama's response (replace with actual Ollama API call)
+
             var ollamaResponse = await GetOllamaResponse(UserMessage);
             
             ChatMessages.Add(new ChatMessage { Text = ollamaResponse, IsUser = false });
@@ -62,7 +58,11 @@
     {
         try
         {
-            using var response = await HttpClient.PostAsJsonAsync("http://localhost:5010/ping", 12, JsonSerializerOptions.Web);
+            using var response = await HttpClient.PostAsJsonAsync("/chat/send-message", new SendMessageReq()
+            {
+                Content = message,
+                ChatId = 
+            });
             var jsonResponse = await response.Content.ReadAsStringAsync();
             return jsonResponse;
         }
