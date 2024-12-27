@@ -1,15 +1,14 @@
 using FastEndpoints;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
-using OllamaSharp.Models.Chat;
-using static System.String;
 using Message = API.Entities.Message;
 
 namespace API.Features;
 
 public record SendMessageReq
 { 
-    public string Content { get; init; } = null!;
+    public string? Content { get; init; } = null!;
     public Guid ChatId { get; init; }
     public Guid UserId { get; init; }
 }
@@ -19,16 +18,12 @@ public record SendMessageRes
     public string Message { get; init; } = null!;
 }
 
-
-sealed class SendMessage(DataContext db, HttpClient httpClient) : Endpoint<SendMessageReq, SendMessageRes>
+[ApiController]
+[Route("api/[controller]")]
+public class SendMessageController(DataContext db, HttpClient httpClient) : ControllerBase
 {
-    public override void Configure()
-    {
-        Post("/chat/send-message");
-        AllowAnonymous();
-    }
-
-    public override async Task HandleAsync(SendMessageReq req, CancellationToken ct)
+    [HttpPost("send")]
+    public async Task<IActionResult> Index(SendMessageReq req, CancellationToken ct)
     {   
         
         var ollama = new OllamaApiClient(new Uri("http://localhost:11434"));
@@ -46,10 +41,10 @@ sealed class SendMessage(DataContext db, HttpClient httpClient) : Endpoint<SendM
 
         await db.SaveChangesAsync(ct);
 
-        await SendAsync(new SendMessageRes()
+        return Ok(new SendMessageRes()
         {
-            Message = response
-        }, cancellation: ct);
+            Message = "Message sent"
+        });
         
     }
 }

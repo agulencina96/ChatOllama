@@ -1,10 +1,9 @@
 using API;
-using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.Load();
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddFastEndpoints();
+builder.Services.AddControllers();
 builder.Services.AddScoped(_ =>
     new HttpClient
     {
@@ -27,5 +26,4 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseHttpsRedirection();
-app.UseFastEndpoints();
 app.Run();
