@@ -1,26 +1,18 @@
-using FastEndpoints;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Features;
 
-public record PingRes
+[ApiController]
+[Route("api/[controller]")]
+public class Ping : ControllerBase
 {
-    public string Message { get; init; } = null!;
-}
-
-public class Ping : Endpoint<EmptyRequest, PingRes>
-{   
-    public override void Configure()
+    public interface IPingResponse
     {
-        Get("/ping");
-        AllowAnonymous();
+        string Message { get; set; }
     }
-
-    public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
+    [HttpGet]
+    public ActionResult<IPingResponse> Get()
     {
-
-        await SendAsync(new PingRes
-        {
-            Message = "Pong"
-        }, cancellation: ct);
+        return Ok(new { Message = "Pong" });
     }
 }

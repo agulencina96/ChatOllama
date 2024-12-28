@@ -1,7 +1,6 @@
 ﻿@inject HttpClient HttpClient
 @rendermode InteractiveServer
 @page "/"
-@using API.Features
 
 <PageTitle>Home</PageTitle>
 
@@ -54,24 +53,9 @@
         }
     }
 
-    private async Task<string?> GetOllamaResponse(string? message)
+    private Task<string> GetOllamaResponse(string? message)
     {
-        try
-        {
-            using var response = await HttpClient.PostAsJsonAsync("/chat/send-message", new SendMessageReq()
-            {
-                Content = message,
-                ChatId = 
-            });
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            return jsonResponse;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return "Errorcito: " + e.Message;
-        }
-       
+       return new Task<string>(() => "I am Ollama, I don't know how to respond to that.");
     }
     
     private string GetMessageClass(bool isUser)
