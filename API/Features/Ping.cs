@@ -11,8 +11,8 @@ public class Ping : ControllerBase
         string Message { get; set; }
     }
     [HttpGet]
-    public ActionResult<IPingResponse> Get()
-    {
-        return Ok(new { Message = "Pong" });
-    }
+    public ActionResult<IPingResponse> Get() => Ok(new { Message = "Pong" });
+    
+    [HttpPost]
+    public ActionResult<IPingResponse> Post() => Ok(new { Message = "Pong" });
 }
