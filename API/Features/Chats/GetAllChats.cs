@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Features;
+namespace API.Features.Chats;
 
-[Route("api/[controller]")]
+[Route("chats/[controller]")]
 [ApiController]
 public class GetAllChats(DataContext context) : ControllerBase
 {

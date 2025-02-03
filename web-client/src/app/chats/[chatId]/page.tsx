@@ -1,7 +1,7 @@
 "use client";
 import { use, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { client } from "@/app/_client/";
+import { client } from "@/app/_providers/client";
 
 export default function Chat({
   params,
@@ -21,7 +21,7 @@ export default function Chat({
   } = useQuery({
     queryKey: ["messages", chatId],
     queryFn: () =>
-      client.api.getAllMessages.get({
+      client.messages.getAllMessages.get({
         queryParameters: {
           chatId,
         },
@@ -31,7 +31,7 @@ export default function Chat({
   const { mutate: sendMessage, isPending } = useMutation({
     mutationKey: ["sendMessage"],
     mutationFn: (text: string) =>
-      client.api.sendMessage.post({
+      client.messages.sendMessage.post({
         chatId,
         text,
       }),
@@ -60,14 +60,14 @@ export default function Chat({
             </div>
           </div>
         ))}
-        {isPending && <div className="text-gray">Sending...</div>}
+        {isPending && <div className="text-black">Sending...</div>}
       </div>
       <div className="flex">
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="flex-1 p-2 border border-gray-300 rounded-l-lg focus:outline-none"
+          className="flex-1 p-2 border border-gray-300 rounded-l-lg focus:outline-none text-black"
           placeholder="Type a message..."
         />
         <button

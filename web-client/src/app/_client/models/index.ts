@@ -86,15 +86,6 @@ export function createIGetAllMessagesResponseFromDiscriminatorValue(parseNode: P
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
- * @returns {IPingResponse}
- */
-// @ts-ignore
-export function createIPingResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
-    return deserializeIntoIPingResponse;
-}
-/**
- * Creates a new instance of the appropriate class based on discriminator value
- * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {Message}
  */
 // @ts-ignore
@@ -175,16 +166,6 @@ export function deserializeIntoIGetAllMessagesResponse(iGetAllMessagesResponse: 
  * @returns {Record<string, (node: ParseNode) => void>}
  */
 // @ts-ignore
-export function deserializeIntoIPingResponse(iPingResponse: Partial<IPingResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
-    return {
-        "message": n => { iPingResponse.message = n.getStringValue(); },
-    }
-}
-/**
- * The deserialization information for the current model
- * @returns {Record<string, (node: ParseNode) => void>}
- */
-// @ts-ignore
 export function deserializeIntoMessage(message: Partial<Message> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
         "response": n => { message.response = n.getStringValue(); },
@@ -231,16 +212,6 @@ export interface IGetAllMessagesResponse extends AdditionalDataHolder, Parsable 
      * The messages property
      */
     messages?: Message[] | null;
-}
-export interface IPingResponse extends AdditionalDataHolder, Parsable {
-    /**
-     * Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
-     */
-    additionalData?: Record<string, unknown>;
-    /**
-     * The message property
-     */
-    message?: string | null;
 }
 export interface Message extends AdditionalDataHolder, Parsable {
     /**
@@ -334,17 +305,6 @@ export function serializeIGetAllMessagesResponse(writer: SerializationWriter, iG
     if (iGetAllMessagesResponse) {
         writer.writeCollectionOfObjectValues<Message>("messages", iGetAllMessagesResponse.messages, serializeMessage);
         writer.writeAdditionalData(iGetAllMessagesResponse.additionalData);
-    }
-}
-/**
- * Serializes information the current object
- * @param writer Serialization writer to use to serialize this model
- */
-// @ts-ignore
-export function serializeIPingResponse(writer: SerializationWriter, iPingResponse: Partial<IPingResponse> | undefined | null = {}) : void {
-    if (iPingResponse) {
-        writer.writeStringValue("message", iPingResponse.message);
-        writer.writeAdditionalData(iPingResponse.additionalData);
     }
 }
 /**

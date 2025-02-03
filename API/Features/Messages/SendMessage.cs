@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using OllamaSharp;
 using OllamaSharp.Models.Chat;
 
-namespace API.Features;
+namespace API.Features.Messages;
 
-[Route("api/[controller]")]
+[Route("messages/[controller]")]
 [ApiController]
 public class SendMessage(DataContext context, OllamaApiClient ollamaApiClient) : ControllerBase
 {

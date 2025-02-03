@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { client } from "./_client/";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { client } from "./_providers/client";
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ export default function Home() {
   const { mutate: createChat } = useMutation({
     mutationKey: ["createChat"],
     mutationFn: (name: string) =>
-      client.api.createChat.post({
+      client.chats.createChat.post({
         name,
       }),
     onSuccess: (data) => {
@@ -26,7 +26,7 @@ export default function Home() {
       <div className="flex justify-center space-x-4">
         <input
           type="text"
-          className="border p-2 rounded"
+          className="border p-2 rounded text-black"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

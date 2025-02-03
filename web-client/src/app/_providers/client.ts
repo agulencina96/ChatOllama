@@ -1,6 +1,6 @@
 import { AnonymousAuthenticationProvider } from "@microsoft/kiota-abstractions";
 import { FetchRequestAdapter } from "@microsoft/kiota-http-fetchlibrary";
-import { createClient } from "./client";
+import { createClient } from "../_client/client";
 // API requires no authentication, so use the anonymous
 // authentication provider
 const authProvider = new AnonymousAuthenticationProvider();

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Features;
+namespace API.Features.Messages;
 
-[Route("api/[controller]")]
+[Route("messages/[controller]")]
 [ApiController]
 public class GetAllMessages(DataContext context) : ControllerBase
 {

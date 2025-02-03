@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { client } from "../_client/";
 import Link from "next/link";
+import { client } from "../_providers/client";
 
 export default function ChatList() {
   const {
@@ -10,7 +10,7 @@ export default function ChatList() {
     error,
   } = useQuery({
     queryKey: ["chats"],
-    queryFn: () => client.api.getAllChats.get(),
+    queryFn: () => client.chats.getAllChats.get(),
   });
 
   return error ? (
