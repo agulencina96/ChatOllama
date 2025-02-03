@@ -13,6 +13,20 @@
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
 
+  db-chat-ollama:
+    image: postgres:latest
+    container_name: db-chat-ollama
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: chat1234
+      POSTGRES_DB: chat
+    volumes:
+      - ./db-chat-ollama:/var/lib/postgresql/data
+
 volumes:
   ollama:
+    driver: local
+  db-chat-ollama:
     driver: local
