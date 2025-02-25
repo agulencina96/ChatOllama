@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton(new OllamaApiClient(new Uri("http://localhost:11434"))
 {
-    SelectedModel = "qwen2.5-coder:1.5b"
+    SelectedModel = "llama3.1:8b"
 });
 
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";

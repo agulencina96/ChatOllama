@@ -18,8 +18,6 @@ public class GetAllChats(DataContext context) : ControllerBase
             }
         );
 
-        if (!chats.Any()) return NotFound();
-
         return Ok(new { Chats = chats });
     }
 

@@ -15,12 +15,9 @@ public class SendMessage(DataContext context, OllamaApiClient ollamaApiClient) :
     {
         var previousMessages = context.Messages
             .Where(m => m.ChatId == request.ChatId)
-            .Select(m => new
-            {
-                m.Content,
-                m.Response
-            })
-            .ToList()
+            .ToList();
+
+        var ollamaPreviousMessages = previousMessages
             .Aggregate(
             new List<OllamaSharp.Models.Chat.Message>(), (acc, m) =>
             {
@@ -32,7 +29,7 @@ public class SendMessage(DataContext context, OllamaApiClient ollamaApiClient) :
 
         var chat = new Chat(ollamaApiClient);
 
-        chat.Messages.AddRange(previousMessages);
+        chat.Messages.AddRange(ollamaPreviousMessages);
 
         var response = "";
         await foreach (var generatedResponse in chat.SendAsync(request.Text))
@@ -47,19 +44,20 @@ public class SendMessage(DataContext context, OllamaApiClient ollamaApiClient) :
             Response = response,
         };
 
+        previousMessages.Add(message);
+
         context.Messages.Add(message);
         context.SaveChanges();
 
         return Ok(new SendMessageResponse
         {
-            Messages = context.Messages
-                .Where(m => m.ChatId == request.ChatId).Select(
-                    m => new Message
-                    {
-                        Text = m.Content,
-                        Response = m.Response
-                    }
-                )
+            Messages = previousMessages.Select(
+                m => new Message
+                {
+                    Text = m.Content,
+                    Response = m.Response
+                }
+            )
         });
     }
 

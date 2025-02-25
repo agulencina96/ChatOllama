@@ -12,4 +12,4 @@ generate-client:
 	find ./web-client/src/app/_client -type f -name '*.ts' -exec sed -i 's/index.js//g' {} +
 
 dev:
-	cd web-client && yarn dev --turbo
+	cd web-client && pnpm dev --turbo

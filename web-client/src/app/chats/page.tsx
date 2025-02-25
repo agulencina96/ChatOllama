@@ -32,6 +32,7 @@ export default function ChatList() {
           </p>
         </Link>
       ))}
+      {chats?.chats?.length === 0 && <p>No chats found.</p>}
     </div>
   );
 }
