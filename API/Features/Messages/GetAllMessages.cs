@@ -16,7 +16,8 @@ public class GetAllMessages(DataContext context) : ControllerBase
                 m => new Message
                 {
                     Text = m.Content,
-                    Response = m.Response
+                    Response = m.Response,
+                    ModelName = m.ModelName
                 }
             );
 
@@ -27,6 +28,7 @@ public class GetAllMessages(DataContext context) : ControllerBase
     {
         public string? Text { set; get; }
         public string? Response { set; get; }
+        public string? ModelName { set; get; }
     }
 
     public interface IGetAllMessagesResponse

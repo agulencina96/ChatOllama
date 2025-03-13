@@ -68,6 +68,15 @@ export function createCreateChatResponseFromDiscriminatorValue(parseNode: ParseN
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {GetModelsResponse}
+ */
+// @ts-ignore
+export function createGetModelsResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoGetModelsResponse;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {IGetAllChatsResponse}
  */
 // @ts-ignore
@@ -86,11 +95,29 @@ export function createIGetAllMessagesResponseFromDiscriminatorValue(parseNode: P
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {Message2}
+ */
+// @ts-ignore
+export function createMessage2FromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoMessage2;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {Message}
  */
 // @ts-ignore
 export function createMessageFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoMessage;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {ModelInfo}
+ */
+// @ts-ignore
+export function createModelInfoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoModelInfo;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -146,6 +173,16 @@ export function deserializeIntoCreateChatResponse(createChatResponse: Partial<Cr
  * @returns {Record<string, (node: ParseNode) => void>}
  */
 // @ts-ignore
+export function deserializeIntoGetModelsResponse(getModelsResponse: Partial<GetModelsResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "models": n => { getModelsResponse.models = n.getCollectionOfObjectValues<ModelInfo>(createModelInfoFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
 export function deserializeIntoIGetAllChatsResponse(iGetAllChatsResponse: Partial<IGetAllChatsResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
         "chats": n => { iGetAllChatsResponse.chats = n.getCollectionOfObjectValues<Chat>(createChatFromDiscriminatorValue); },
@@ -168,8 +205,34 @@ export function deserializeIntoIGetAllMessagesResponse(iGetAllMessagesResponse: 
 // @ts-ignore
 export function deserializeIntoMessage(message: Partial<Message> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
+        "modelName": n => { message.modelName = n.getStringValue(); },
         "response": n => { message.response = n.getStringValue(); },
         "text": n => { message.text = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoMessage2(message2: Partial<Message2> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "response": n => { message2.response = n.getStringValue(); },
+        "text": n => { message2.text = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoModelInfo(modelInfo: Partial<ModelInfo> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "format": n => { modelInfo.format = n.getStringValue(); },
+        "modifiedAt": n => { modelInfo.modifiedAt = n.getDateValue(); },
+        "name": n => { modelInfo.name = n.getStringValue(); },
+        "quantizationLevel": n => { modelInfo.quantizationLevel = n.getStringValue(); },
+        "size": n => { modelInfo.size = n.getNumberValue(); },
     }
 }
 /**
@@ -180,6 +243,7 @@ export function deserializeIntoMessage(message: Partial<Message> | undefined = {
 export function deserializeIntoSendMessageRequest(sendMessageRequest: Partial<SendMessageRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
         "chatId": n => { sendMessageRequest.chatId = n.getGuidValue(); },
+        "modelName": n => { sendMessageRequest.modelName = n.getStringValue(); },
         "text": n => { sendMessageRequest.text = n.getStringValue(); },
     }
 }
@@ -190,8 +254,18 @@ export function deserializeIntoSendMessageRequest(sendMessageRequest: Partial<Se
 // @ts-ignore
 export function deserializeIntoSendMessageResponse(sendMessageResponse: Partial<SendMessageResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
-        "messages": n => { sendMessageResponse.messages = n.getCollectionOfObjectValues<Message>(createMessageFromDiscriminatorValue); },
+        "messages": n => { sendMessageResponse.messages = n.getCollectionOfObjectValues<Message2>(createMessage2FromDiscriminatorValue); },
     }
+}
+export interface GetModelsResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+     */
+    additionalData?: Record<string, unknown>;
+    /**
+     * The models property
+     */
+    models?: ModelInfo[] | null;
 }
 export interface IGetAllChatsResponse extends AdditionalDataHolder, Parsable {
     /**
@@ -219,6 +293,10 @@ export interface Message extends AdditionalDataHolder, Parsable {
      */
     additionalData?: Record<string, unknown>;
     /**
+     * The modelName property
+     */
+    modelName?: string | null;
+    /**
      * The response property
      */
     response?: string | null;
@@ -226,6 +304,46 @@ export interface Message extends AdditionalDataHolder, Parsable {
      * The text property
      */
     text?: string | null;
+}
+export interface Message2 extends AdditionalDataHolder, Parsable {
+    /**
+     * Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+     */
+    additionalData?: Record<string, unknown>;
+    /**
+     * The response property
+     */
+    response?: string | null;
+    /**
+     * The text property
+     */
+    text?: string | null;
+}
+export interface ModelInfo extends AdditionalDataHolder, Parsable {
+    /**
+     * Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+     */
+    additionalData?: Record<string, unknown>;
+    /**
+     * The format property
+     */
+    format?: string | null;
+    /**
+     * The modifiedAt property
+     */
+    modifiedAt?: Date | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+    /**
+     * The quantizationLevel property
+     */
+    quantizationLevel?: string | null;
+    /**
+     * The size property
+     */
+    size?: number | null;
 }
 export interface SendMessageRequest extends AdditionalDataHolder, Parsable {
     /**
@@ -236,6 +354,10 @@ export interface SendMessageRequest extends AdditionalDataHolder, Parsable {
      * The chatId property
      */
     chatId?: Guid | null;
+    /**
+     * The modelName property
+     */
+    modelName?: string | null;
     /**
      * The text property
      */
@@ -249,7 +371,7 @@ export interface SendMessageResponse extends AdditionalDataHolder, Parsable {
     /**
      * The messages property
      */
-    messages?: Message[] | null;
+    messages?: Message2[] | null;
 }
 /**
  * Serializes information the current object
@@ -290,6 +412,17 @@ export function serializeCreateChatResponse(writer: SerializationWriter, createC
  * @param writer Serialization writer to use to serialize this model
  */
 // @ts-ignore
+export function serializeGetModelsResponse(writer: SerializationWriter, getModelsResponse: Partial<GetModelsResponse> | undefined | null = {}) : void {
+    if (getModelsResponse) {
+        writer.writeCollectionOfObjectValues<ModelInfo>("models", getModelsResponse.models, serializeModelInfo);
+        writer.writeAdditionalData(getModelsResponse.additionalData);
+    }
+}
+/**
+ * Serializes information the current object
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
 export function serializeIGetAllChatsResponse(writer: SerializationWriter, iGetAllChatsResponse: Partial<IGetAllChatsResponse> | undefined | null = {}) : void {
     if (iGetAllChatsResponse) {
         writer.writeCollectionOfObjectValues<Chat>("chats", iGetAllChatsResponse.chats, serializeChat);
@@ -314,6 +447,7 @@ export function serializeIGetAllMessagesResponse(writer: SerializationWriter, iG
 // @ts-ignore
 export function serializeMessage(writer: SerializationWriter, message: Partial<Message> | undefined | null = {}) : void {
     if (message) {
+        writer.writeStringValue("modelName", message.modelName);
         writer.writeStringValue("response", message.response);
         writer.writeStringValue("text", message.text);
         writer.writeAdditionalData(message.additionalData);
@@ -324,9 +458,37 @@ export function serializeMessage(writer: SerializationWriter, message: Partial<M
  * @param writer Serialization writer to use to serialize this model
  */
 // @ts-ignore
+export function serializeMessage2(writer: SerializationWriter, message2: Partial<Message2> | undefined | null = {}) : void {
+    if (message2) {
+        writer.writeStringValue("response", message2.response);
+        writer.writeStringValue("text", message2.text);
+        writer.writeAdditionalData(message2.additionalData);
+    }
+}
+/**
+ * Serializes information the current object
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeModelInfo(writer: SerializationWriter, modelInfo: Partial<ModelInfo> | undefined | null = {}) : void {
+    if (modelInfo) {
+        writer.writeStringValue("format", modelInfo.format);
+        writer.writeDateValue("modifiedAt", modelInfo.modifiedAt);
+        writer.writeStringValue("name", modelInfo.name);
+        writer.writeStringValue("quantizationLevel", modelInfo.quantizationLevel);
+        writer.writeNumberValue("size", modelInfo.size);
+        writer.writeAdditionalData(modelInfo.additionalData);
+    }
+}
+/**
+ * Serializes information the current object
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
 export function serializeSendMessageRequest(writer: SerializationWriter, sendMessageRequest: Partial<SendMessageRequest> | undefined | null = {}) : void {
     if (sendMessageRequest) {
         writer.writeGuidValue("chatId", sendMessageRequest.chatId);
+        writer.writeStringValue("modelName", sendMessageRequest.modelName);
         writer.writeStringValue("text", sendMessageRequest.text);
         writer.writeAdditionalData(sendMessageRequest.additionalData);
     }
@@ -338,7 +500,7 @@ export function serializeSendMessageRequest(writer: SerializationWriter, sendMes
 // @ts-ignore
 export function serializeSendMessageResponse(writer: SerializationWriter, sendMessageResponse: Partial<SendMessageResponse> | undefined | null = {}) : void {
     if (sendMessageResponse) {
-        writer.writeCollectionOfObjectValues<Message>("messages", sendMessageResponse.messages, serializeMessage);
+        writer.writeCollectionOfObjectValues<Message2>("messages", sendMessageResponse.messages, serializeMessage2);
         writer.writeAdditionalData(sendMessageResponse.additionalData);
     }
 }

@@ -1,8 +1,8 @@
 {
-  "descriptionHash": "9A9AE2F2E57D75DAFC88B1E7CB3D4F7DE87B9137A0FFA43D78870B7F38E7A5527D70958A0C656EC5F6DF2ED45BB850633778E90F24406535F1281EA6B0F7C638",
+  "descriptionHash": "48726B0D1FF7F52D784481596446A2E1F77EDD8B12DD2B337C724C5280EACC2975DE70DB59D1CF2B11A0C1027D8D12532A9B233D67A37FF6277CD20A5509F961",
   "descriptionLocation": "http://localhost:5010/openapi/v1.json",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.23.0",
+  "kiotaVersion": "1.22.3",
   "clientClassName": "client",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "ApiSdk",

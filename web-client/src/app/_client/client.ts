@@ -6,6 +6,8 @@ import { ChatsRequestBuilderNavigationMetadata, type ChatsRequestBuilder } from 
 // @ts-ignore
 import { MessagesRequestBuilderNavigationMetadata, type MessagesRequestBuilder } from './messages/';
 // @ts-ignore
+import { ModelsRequestBuilderNavigationMetadata, type ModelsRequestBuilder } from './modelsRequests/';
+// @ts-ignore
 import { apiClientProxifier, registerDefaultDeserializer, registerDefaultSerializer, type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type RequestAdapter } from '@microsoft/kiota-abstractions';
 // @ts-ignore
 import { FormParseNodeFactory, FormSerializationWriterFactory } from '@microsoft/kiota-serialization-form';
@@ -28,6 +30,10 @@ export interface Client extends BaseRequestBuilder<Client> {
      * The messages property
      */
     get messages(): MessagesRequestBuilder;
+    /**
+     * The models property
+     */
+    get models(): ModelsRequestBuilder;
 }
 /**
  * Instantiates a new {@link Client} and sets the default values.
@@ -63,6 +69,9 @@ export const ClientNavigationMetadata: Record<Exclude<keyof Client, KeysToExclud
     },
     messages: {
         navigationMetadata: MessagesRequestBuilderNavigationMetadata,
+    },
+    models: {
+        navigationMetadata: ModelsRequestBuilderNavigationMetadata,
     },
 };
 /* tslint:enable */

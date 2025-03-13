@@ -22,10 +22,11 @@ public class SendMessage(DataContext context, OllamaApiClient ollamaApiClient) :
             new List<OllamaSharp.Models.Chat.Message>(), (acc, m) =>
             {
                 acc.Add(new OllamaSharp.Models.Chat.Message(ChatRole.User, m.Content ?? ""));
-                acc.Add(new OllamaSharp.Models.Chat.Message(ChatRole.Assistant, m.Response));
+                acc.Add(new OllamaSharp.Models.Chat.Message(ChatRole.Assistant, m.Response ?? ""));
                 return acc;
             });
 
+        ollamaApiClient.SelectedModel = request.ModelName;
 
         var chat = new Chat(ollamaApiClient);
 
@@ -42,6 +43,7 @@ public class SendMessage(DataContext context, OllamaApiClient ollamaApiClient) :
             Content = request.Text,
             ChatId = request.ChatId,
             Response = response,
+            ModelName = request.ModelName
         };
 
         previousMessages.Add(message);
@@ -65,6 +67,8 @@ public class SendMessage(DataContext context, OllamaApiClient ollamaApiClient) :
     {
         public required string Text { get; set; }
         public required Guid ChatId { get; set; }
+
+        public required string ModelName { get; set; }
     }
 
     public class SendMessageResponse
